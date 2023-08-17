@@ -6,7 +6,7 @@ import Form, {
   ButtonItem,
   ButtonOptions,
   RequiredRule,
-  CustomRule,
+  CustomRule, PatternRule,
 } from 'devextreme-react/form';
 import LoadIndicator from 'devextreme-react/load-indicator';
 import notify from 'devextreme/ui/notify';
@@ -48,6 +48,8 @@ export default function ChangePasswordForm() {
           editorOptions={passwordEditorOptions}
         >
           <RequiredRule message="Password is required" />
+          <PatternRule message="Password needs to have at least 1 capital letter, 1 lower case letter, 1 number, and be between 6-10 characters in length"
+                       pattern={'^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(\\S).{6,10}$'} />
           <Label visible={false} />
         </Item>
         <Item
@@ -56,6 +58,8 @@ export default function ChangePasswordForm() {
           editorOptions={confirmedPasswordEditorOptions}
         >
           <RequiredRule message="Password is required" />
+          <PatternRule message="Password needs to have at least 1 capital letter, 1 lower case letter, 1 number, and be between 6-10 characters in length"
+                       pattern={'^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(\\S).{6,10}$'} />
           <CustomRule
             message={'Passwords do not match'}
             validationCallback={confirmPassword}

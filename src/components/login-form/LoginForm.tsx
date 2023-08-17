@@ -6,7 +6,8 @@ import Form, {
   ButtonItem,
   ButtonOptions,
   RequiredRule,
-  EmailRule
+  EmailRule,
+  PatternRule
 } from 'devextreme-react/form';
 import LoadIndicator from 'devextreme-react/load-indicator';
 import notify from 'devextreme/ui/notify';
@@ -36,65 +37,89 @@ export default function LoginForm() {
     navigate('/create-account');
   }, [navigate]);
 
+  const changePasswordMode = useCallback((e: any) => {
+    const editor = e.element.parentElement.previousElementSibling.firstChild;
+    editor.type = editor.type === 'text' ? 'password' : 'text';
+  }, []);
+
+  const passwordEditorOptions = {
+    stylingMode: 'filled',
+    placeholder: 'Password',
+    mode: 'password',
+    pattern: '',
+    buttons: [
+      {
+        name: 'password',
+        location: 'after',
+        options: {
+          icon: 'eyeopen',
+          type: 'default',
+          onClick: (e: Event) => changePasswordMode(e),
+        },
+      },
+    ],
+  };
+
   return (
-    <form className={'login-form'} onSubmit={onSubmit}>
-      <Form formData={formData.current} disabled={loading}>
-        <Item
-          dataField={'email'}
-          editorType={'dxTextBox'}
-          editorOptions={emailEditorOptions}
-        >
-          <RequiredRule message="Email is required" />
-          <EmailRule message="Email is invalid" />
-          <Label visible={false} />
-        </Item>
-        <Item
-          dataField={'password'}
-          editorType={'dxTextBox'}
-          editorOptions={passwordEditorOptions}
-        >
-          <RequiredRule message="Password is required" />
-          <Label visible={false} />
-        </Item>
-        <Item
-          dataField={'rememberMe'}
-          editorType={'dxCheckBox'}
-          editorOptions={rememberMeEditorOptions}
-        >
-          <Label visible={false} />
-        </Item>
-        <ButtonItem>
-          <ButtonOptions
-            width={'100%'}
-            type={'default'}
-            useSubmitBehavior={true}
+      <form className={'login-form'} onSubmit={onSubmit}>
+        <Form formData={formData.current} disabled={loading}>
+          <Item
+              dataField={'email'}
+              editorType={'dxTextBox'}
+              editorOptions={emailEditorOptions}
           >
+            <RequiredRule message="Email is required" />
+            <EmailRule message="Email is invalid" />
+            <Label visible={false} />
+          </Item>
+          <Item
+              dataField={'password'}
+              editorType={'dxTextBox'}
+              editorOptions={passwordEditorOptions}
+          >
+            <RequiredRule message="Password is required" />
+            <PatternRule message="Password needs to have at least 1 capital letter, 1 lower case letter, 1 number, and be between 6-10 characters in length"
+                         pattern={'^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(\\S).{6,10}$'} />
+            <Label visible={true} />
+          </Item>
+          <Item
+              dataField={'rememberMe'}
+              editorType={'dxCheckBox'}
+              editorOptions={rememberMeEditorOptions}
+          >
+            <Label visible={false} />
+          </Item>
+          <ButtonItem>
+            <ButtonOptions
+                width={'100%'}
+                type={'default'}
+                useSubmitBehavior={true}
+            >
             <span className="dx-button-text">
               {
                 loading
-                  ? <LoadIndicator width={'24px'} height={'24px'} visible={true} />
-                  : 'Sign In'
+                    ? <LoadIndicator width={'24px'} height={'24px'} visible={true} />
+                    : 'Sign In'
               }
             </span>
-          </ButtonOptions>
-        </ButtonItem>
-        <Item>
-          <div className={'link'}>
-            <Link to={'/reset-password'}>Forgot password?</Link>
-          </div>
-        </Item>
-        <ButtonItem>
-          <ButtonOptions
-            text={'Create an account'}
-            width={'100%'}
-            onClick={onCreateAccountClick}
-          />
-        </ButtonItem>
-      </Form>
-    </form>
+            </ButtonOptions>
+          </ButtonItem>
+          <Item>
+            <div className={'link'}>
+              <Link to={'/reset-password'}>Forgot password?</Link>
+            </div>
+          </Item>
+          <ButtonItem>
+            <ButtonOptions
+                text={'Create an account'}
+                width={'100%'}
+                onClick={onCreateAccountClick}
+            />
+          </ButtonItem>
+        </Form>
+      </form>
   );
 }
 
 const emailEditorOptions = { stylingMode: 'filled', placeholder: 'Email', mode: 'email' };
-const passwordEditorOptions = { stylingMode: 'filled', placeholder: 'Password', mode: 'password' };
 const rememberMeEditorOptions = { text: 'Remember me', elementAttr: { class: 'form-text' } };
