@@ -7,16 +7,16 @@ export const navigation = [
   {
     text: 'Categories',
     path: '/categories',
-    icon: 'folder',
+    icon: 'fieldchooser',
   },
   {
     text: 'Search',
     path: '/search',
-    icon: 'folder',
+    icon: 'search',
   },
   {
     text: 'Jokes',
     path: '/jokes',
-    icon: 'folder',
+    icon: 'description',
   }
   ];

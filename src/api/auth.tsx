@@ -4,7 +4,17 @@ export async function signIn(email: string, password: string) {
   try {
     // Send request
     console.log(email, password);
-
+    if(email && password) {
+      // Slimy hack to simulate authentication
+      return {
+        isOk: true,
+        data: {
+          email: email,
+          avatarUrl: 'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/68.png'
+        }
+      }
+    }
+    // slimy hack to auto-authenticate the default user when hitting the base url.
     return {
       isOk: true,
       data: defaultUser
